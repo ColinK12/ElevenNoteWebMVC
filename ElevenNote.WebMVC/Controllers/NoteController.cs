@@ -1,5 +1,4 @@
 ﻿using ElevenNote.Models;
-using ElevenNote.Service;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
