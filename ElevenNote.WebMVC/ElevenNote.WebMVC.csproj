@@ -263,9 +263,9 @@
       <Project>{d1e440c2-96a6-4321-a2ec-af86285058ed}</Project>
       <Name>ElevenNote.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ElevenNote.Services\ElevenNote.Services.csproj">
+    <ProjectReference Include="..\ElevenNote.Services\ElevenNote.Service.csproj">
       <Project>{0a0878ad-9753-4649-9d77-2ad281e3726c}</Project>
-      <Name>ElevenNote.Services</Name>
+      <Name>ElevenNote.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

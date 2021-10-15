@@ -6,16 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ElevenNote.Services
+namespace ElevenNote.Service
 {
-    public class NoteServices
+    public class NoteService
     {
-        private readonly Guid _userId;
-        public NoteServices(Guid userId)
+        public readonly Guid _userId;
+        public NoteService(Guid userId)
         {
             _userId = userId;
         }
-        public bool CreateNote(NoteCreate model)
+        private bool CreateNote(NoteCreate model)
         {
             var entity =
                 new Note()
