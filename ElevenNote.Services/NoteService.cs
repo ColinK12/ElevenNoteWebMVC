@@ -30,7 +30,7 @@ public class NoteService
         }
     }
 
-    private IEnumerable<NoteListItem> GetNotes()
+    public IEnumerable<NoteListItem> GetNotes()
     {
         using (var ctx = new ApplicationDbContext())
         {
@@ -49,5 +49,42 @@ public class NoteService
                     );
             return query.ToArray();
         }
+        public NoteDetail GetNoteById(int id)
+
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                    .Notes
+                    .Single(e => e.NoteId == id && e.OwnerId == _userId);
+                return
+                    new NoteDetail
+                    {
+                        NoteId = entity.NoteId,
+                        Title = entity.Title,
+                        Content = entity.Content,
+                        CreatedUtc = entity.CreatedUtc,
+                        ModifiedUtc = entity.ModifiedUtc,
+                    };
+            }
+        }
+        public bool UpdateNote(NoteEdit model)
+        {
+            using(var ctx = new ApplicationDbContext())
+            {
+                var entitiy =
+                    ctx
+                    .Notes
+                    .Single(e => e.NoteId == model.NoteId && e.OwnerId == _userId);
+
+                entitiy.Title = model.Title;
+                entitiy.Content = model.Content;
+                entitiy.ModifiedUtc = DateTimeOffset.UtcNow;
+
+                return ctx.SaveChanges() == 1;
+            }
+        }
+
     }
 }
