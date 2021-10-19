@@ -22,6 +22,22 @@ namespace ElevenNote.WebMVC.Controllers
             return View(model);
 
         }
+        public ActionResult Create(NoteCreate model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var service = CreateNoteService();
+
+            if (service.CreateNote(model))
+            {
+                TempData["SaveResult"] = "your note was created.";
+                return RedirectToAction("Index");
+
+            };
+            ModelState.AddModelError("", "Note could not be created.");
+
+            return View(model);
+        }
         public ActionResult Details(int id)
         {
             var svc = CreateNoteService();
@@ -42,6 +58,44 @@ namespace ElevenNote.WebMVC.Controllers
                 };
             return View(model);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, NoteEdit model)
+        {
+            if (ModelState.IsValid) return View(model);
+
+            if(model.NoteId != id)
+            {
+                ModelState.AddModelError("", "Id Mismatch");
+                return View(model);
+            }
+
+            var service = CreateNoteService();
+
+            if (service.UpdateNote(model))
+            {
+                TempData["SaveResult"] = "Your Note Was updated.";
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError("", "Your note could not be updated.");
+            return View(model);
+        }
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeletePost (int id)
+        {
+            var service = CreateNoteService();
+            service.DeleteNote(id);
+
+            TempData["Save Result"] = "Your note was Deleted",
+            
+                return RedirectToActionAction("Index");
+        }
+    //Get
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+
         private NoteService CreateNoteService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
@@ -49,24 +103,5 @@ namespace ElevenNote.WebMVC.Controllers
             return service;
         }
     }
-    //Add method here VVVV
-    //Get
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Create(NoteCreate model)
-    {
-        if (!ModelState.IsValid) return View(model);
-        
-            var service = CreateNoteService();
-            
-            if (service.CreateNote(model))
-            {
-            TempData["SaveResult"] = "your note was created.";
-            return RedirectToAction("Index");
 
-            };
-            ModelState.AddModelError("", "Note could not be created.");
-
-            return View (model);
-    }
 }
